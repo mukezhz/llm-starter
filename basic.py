@@ -1,9 +1,11 @@
 from typing import Any
 import requests
 
-OLLAMA_API = "http://192.168.1.195:11434/api/chat"
+from utils.env import OLLAMA_HOST
+
 HEADERS = {"Content-Type": "application/json"}
 MODEL = "llama3.2"
+
 
 messages = [
     {"role": "user", "content": "What is the capital of Nepal?"},
@@ -11,6 +13,7 @@ messages = [
 
 payload = {"model": MODEL, "messages": messages, "stream": False}
 
-response = requests.post(OLLAMA_API, json=payload, headers=HEADERS)
+url = f"{OLLAMA_HOST}/api/chat"
+response = requests.post(url=url, json=payload, headers=HEADERS)
 json_response: dict[str, Any] = response.json()
 print(json_response.get("message", {}).get("content"))
